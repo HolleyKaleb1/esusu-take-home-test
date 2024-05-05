@@ -10,6 +10,7 @@ import (
 type TokenDatabase struct {
     sync.RWMutex
     Tokens map[string]int 
+}
 
 func NewTokenDatabase() *TokenDatabase {
     return &TokenDatabase{
