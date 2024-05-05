@@ -77,5 +77,17 @@ Answers to Questions 3-4
   - Cache Implementation
     - Since we have now added complexity around the claims we can now implement a cache that caches/lazyloads the status of users, when user is updated we update the cache to ensure that performance is not impacted by claim changes
   - Also we will need to scale up our authorization system to scale up as our load increases
+
+  Here is a potential design of the system at a high level
+  - Flow
+    - Client calls meme service
+    - Load balancer handles the traffic based on the load that is needed based on load on service
+    - Meme service takes token and uses authentication middleware to get context of jwt sent by client (Cache sits in front of this)
+      - If the user is frequent or recent we will try cache if there is a cache miss we will go to the auth service and get the claims and hydrate the cache.
+    -  Meme service will then check the tokens to see if user has enough tokens, will return that the user has insufficient tokens or if they have enough tokens we will then process the request and update the tokens after because we only want to remove tokens if the process was completed by our system. 
+    -  Based on claims determine the path in application code whether you want to get default memes from db or if you want generated memes by AI.
+      
+  <img width="1534" alt="Screenshot 2024-05-05 at 3 46 35 PM" src="https://github.com/HolleyKaleb1/esusu-take-home-test/assets/42941354/888aed6f-1e96-41a6-8134-f195a017af24">
+
      
 
